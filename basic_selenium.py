@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
+from selenium.webdriver import ActionChains
 import time
 
 
@@ -17,7 +18,7 @@ class SeleniumScript:
         #driver = webdriver.Chrome(service=service, options=options)
         self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
         self.driver.maximize_window()
-        self.driver.implicitly_wait(20)
+        self.driver.implicitly_wait(30)
     
     def implicit_wait(self):
         self.driver.implicitly_wait(20)
@@ -63,14 +64,59 @@ class SeleniumScript:
         links = whole_section.find_elements(By.TAG_NAME, "a")
         print("Total number of links : ",len(links) )
         print("First link is : ", links.__getitem__(0).text)
+        
+    def mouse_over_menu(self):
+        #selenium.driver.common.action.chains
+        self.driver.get("https://www.way2automation.com/")
+        menu = self.driver.find_element(By.XPATH, "//*[@id=\"menu-item-27617\"]")
+        actions = ActionChains(self.driver)
+        actions.move_to_element(menu).perform()
+        self.driver.find_element(By.XPATH, "//*[@id=\"menu-item-27618\"]").click()
 
+    def handle_sliders(self):
+        #selenium.driver.common.action.chains
+        self.driver.get("https://jqueryui.com/slider/")
+        mainslider = self.driver.find_element(By.CSS_SELECTOR, "#slider")
+        location = mainslider.location
+        size = mainslider.size
+        height, width = size['height'], size['width']
+        slider = self.driver.find_element(By.XPATH, "//*[@id=\"slider\"]/span") 
+        actions = ActionChains(self.driver)
+        #drag the locater to the middle
+        actions.drag_and_drop_by_offset(slider, width/2, 0).perform()
+        time.sleep(5)
+        print("Heigth = ", height, "breadth= ",width)
+        
+    def mresize_element(self):
+        #selenium.driver.common.action.chains
+        self.driver.get("https://jqueryui.com/slider/")
+        mainslider = self.driver.find_element(By.CSS_SELECTOR, "#slider")
+        resizable = self.driver.find_element(By.XPATH, "//*[@id=\"resizable\"]/div[3]") 
+        ActionChains(self.driver).drag_and_drop_by_offset(resizable, 400, 400).perform()
+        
+    def drag_and_drop(self):
+        #selenium.driver.common.action.chains
+        self.driver.get("https://jqueryui.com/droppable/")
+        drag = self.driver.find_element(By.XPATH, "//*[@id=\"draggable\"]/p")
+        drop  = self.driver.find_element(By.XPATH, "//*[@id=\"droppable\"]") 
+        ActionChains(self.driver).drag_and_drop(drag, drop).perform()
+        
+    def drag_and_drop(self):
+        #selenium.driver.common.action.chains
+        self.driver.get("https://jqueryui.com/droppable/")
+        drag = self.driver.find_element(By.XPATH, "//*[@id=\"draggable\"]/p")
+        drop  = self.driver.find_element(By.XPATH, "//*[@id=\"droppable\"]") 
+        ActionChains(self.driver).context().perform()
 
 
 if __name__ == "__main__":
     myscript = SeleniumScript()
     #myscript.explicit_wait()
     #myscript.dropdown()
-    myscript.finding_links()
+    #myscript.finding_links()
+    #myscript.mouse_over_menu()
+    #myscript.handle_sliders()
+    myscript.drag_and_drop()
     myscript.quit_driver()
 
 
