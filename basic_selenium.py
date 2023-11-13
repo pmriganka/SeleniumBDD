@@ -104,9 +104,8 @@ class SeleniumScript:
     def drag_and_drop(self):
         #selenium.driver.common.action.chains
         self.driver.get("https://jqueryui.com/droppable/")
-        drag = self.driver.find_element(By.XPATH, "//*[@id=\"draggable\"]/p")
-        drop  = self.driver.find_element(By.XPATH, "//*[@id=\"droppable\"]") 
-        ActionChains(self.driver).context().perform()
+        img  = self.driver.find_element(By.XPATH, "//*[@id=\"droppable\"]") 
+        ActionChains(self.driver).context_click(img).perform()
 
 
 if __name__ == "__main__":
