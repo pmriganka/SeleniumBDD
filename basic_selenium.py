@@ -7,6 +7,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver import ActionChains
+from selenium.webdriver.common.alert import Alert
 import time
 
 
@@ -75,17 +76,20 @@ class SeleniumScript:
 
     def handle_sliders(self):
         #selenium.driver.common.action.chains
-        self.driver.get("https://jqueryui.com/slider/")
-        mainslider = self.driver.find_element(By.CSS_SELECTOR, "#slider")
+        self.driver.get("https://www.globalsqa.com/demo-site/sliders/#Color%20Picker")
+        #iframe_size = self.driver.find_elements(By.TAG_NAME, "iframe")
+        self.driver.switch_to.frame(self.driver.find_element(By.XPATH, "/html/body/div[1]/div[1]/div[2]/div/div/div[2]/div/div/div[1]/p/iframe"))
+        mainslider = self.driver.find_element(By.XPATH, "/html/body/div[1]/div")
         location = mainslider.location
         size = mainslider.size
-        height, width = size['height'], size['width']
-        slider = self.driver.find_element(By.XPATH, "//*[@id=\"slider\"]/span") 
+        height, breadth = size['height'], size['width']
+        slider = self.driver.find_element(By.XPATH, "/html/body/div[1]/span")
         actions = ActionChains(self.driver)
         #drag the locater to the middle
-        actions.drag_and_drop_by_offset(slider, width/2, 0).perform()
-        time.sleep(5)
-        print("Heigth = ", height, "breadth= ",width)
+        actions.drag_and_drop_by_offset(slider, 0, height/3).perform()
+        time.sleep(3)
+        print("Heigth = ", height, "breadth= ",breadth)
+              
         
     def mresize_element(self):
         #selenium.driver.common.action.chains
@@ -108,14 +112,26 @@ class SeleniumScript:
         ActionChains(self.driver).context_click(img).perform()
 
 
+    def alerts(self):
+        self.driver.get("https://mail.rediff.com/cgi-bin/login.cgi")
+        self.driver.find_element(By.XPATH, "/html/body/div[1]/div[1]/div[1]/div[2]/form/div[1]/div[2]/div[2]/div[2]/div/input[2]").click()
+        time.sleep(3)
+        alert = Alert(self.driver)
+        print(alert.text)
+        alert.accept()
+        time.sleep(3)
+
+
+
 if __name__ == "__main__":
     myscript = SeleniumScript()
     #myscript.explicit_wait()
     #myscript.dropdown()
     #myscript.finding_links()
     #myscript.mouse_over_menu()
-    #myscript.handle_sliders()
-    myscript.drag_and_drop()
+    myscript.handle_sliders()
+    #myscript.drag_and_drop()
+    #myscript.alerts()
     myscript.quit_driver()
 
 
