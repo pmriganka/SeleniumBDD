@@ -100,12 +100,14 @@ class SeleniumScript:
         
     def drag_and_drop(self):
         #selenium.driver.common.action.chains
-        self.driver.get("https://jqueryui.com/droppable/")
-        drag = self.driver.find_element(By.XPATH, "//*[@id=\"draggable\"]/p")
-        drop  = self.driver.find_element(By.XPATH, "//*[@id=\"droppable\"]") 
-        ActionChains(self.driver).drag_and_drop(drag, drop).perform()
+        self.driver.get("https://www.globalsqa.com/demo-site/draganddrop/")
+        new_iframe = self.driver.switch_to.frame(self.driver.find_element(By.XPATH, "//*[@id=\"post-2669\"]/div[2]/div/div/div[1]/p/iframe"))
+        dragable  = self.driver.find_element(By.XPATH, "//*[@id=\"gallery\"]/li[3]/img")
+        dropable = self.driver.find_element(By.XPATH, "//*[@id=\"trash\"]")
+        ActionChains(self.driver).drag_and_drop(dragable, dropable).perform()
+        time.sleep(2)
         
-    def drag_and_drop(self):
+    def right_click(self):
         #selenium.driver.common.action.chains
         self.driver.get("https://jqueryui.com/droppable/")
         img  = self.driver.find_element(By.XPATH, "//*[@id=\"droppable\"]") 
@@ -121,6 +123,8 @@ class SeleniumScript:
         alert.accept()
         time.sleep(3)
 
+    def popups(self):
+        pass
 
 
 if __name__ == "__main__":
@@ -129,9 +133,10 @@ if __name__ == "__main__":
     #myscript.dropdown()
     #myscript.finding_links()
     #myscript.mouse_over_menu()
-    myscript.handle_sliders()
+    #myscript.handle_sliders()
     #myscript.drag_and_drop()
     #myscript.alerts()
+    myscript.popups()
     myscript.quit_driver()
 
 
