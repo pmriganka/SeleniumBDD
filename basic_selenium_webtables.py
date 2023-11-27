@@ -23,7 +23,7 @@ class SeleniumScript:
     
     def working_with_table(self):
         self.driver.get("https://www.espncricinfo.com/series/icc-cricket-world-cup-2023-24-1367856/points-table-standings")
-        first_element = self.driver.find_element(By.XPATH, "//*[@id=\"main-container\"]/div[3]/div[4]/div/div/table/tbody/tr[1]/td[1]")
+        first_element = self.driver.find_elements(By.XPATH, "//*[@id=\"main-container\"]/div[3]/div[4]/div/div/table/tbody/tr[1]/td[1]")
         print(first_element.text)
             
         
