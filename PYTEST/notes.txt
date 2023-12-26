@@ -1,1 +1,42 @@
 Allure reporting - https://allurereport.org/docs/gettingstarted-installation/
+
+SELENIUM GRID
+Composed of six different components
+- Standalone : fully functional Grid with a single command within a single process BUT can only run on a single machine
+    Develop or debug tests using RemoteWebDriver locally
+    Running quick test suites before pushing code
+    Have a easy to setup Grid in a CI/CD tool (GitHub Actions, Jenkins, etc…)
+    - "java -jar selenium-server-<version>.jar standalone"
+- Hub and Node : combine different machines with different operationg system and browser versions
+    run tests on different enviornment and scale capacities up and down
+    HUB: compose of different components like Router , Distributor , Session Map , New Session Queue and Event Bus
+    - "java -jar selenium-server-<version>.jar hub"
+    NODE: detects different drivers that can be used
+        Below command assumes Node is running on the same machine where the hub is running
+       -  "java -jar selenium-server-<version>.jar node"
+        More than one node
+       -  "java -jar selenium-server-<version>.jar node --port 5555"
+       -  "java -jar selenium-server-<version>.jar node --port 6666" 
+
+
+SELENIUM GRID COMPONENTS 
+
+Router
+entry point in grid receving all external requests and forwards to the correct components
+New session Request forwarded to the New Session Queue 
+Existing session the router will query the Session Map to get the Node ID where session is running and then request is forwarded to the Node
+balances the load by sending requests tot he component that is able to handle them
+
+Distributor
+
+Register and keep track of all Nodes and their capabilities
+A Node registers to the Distributor by sending a Node registration event through the Event Bus. The Distributor reads it, and then tries to reach the Node via HTTP to confirm its existence. 
+If the request is successful, the Distributor registers the Node and keeps track of all Nodes capabilities through the GridModel.
+
+Query the New Session Queue and process any pending new session requests
+When a new session request is sent to the Router, it gets forwarded to the New Session Queue, where it will wait in the queue. The Distributor will poll the New Session Queue for pending new session requests, 
+and then finds a suitable Node where the session can be created. After the session has been created, the Distributor stores in the Session Map the relation between the session id and Node 
+where the session is being executed.
+
+
+

@@ -46,7 +46,7 @@ class SeleniumScript:
     def dropdown(self):
         self.driver.implicitly_wait(50)
         self.driver.get("https://wikipedia.org")
-        dpdwn_element = self.driver.find_element(By.ID, "searchLanguage")
+        dpdwn_element = self.driver.find_element(By.XPATH, "searchLanguage")
         select = Select(dpdwn_element)
         time.sleep(2)
         select.select_by_value("hi")
